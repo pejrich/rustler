@@ -36,12 +36,13 @@ defmodule Rustler.Compiler do
         {_, code} -> raise "Rust NIF compile error (rustc exit code #{code})"
       end
 
+      :ok = post_build(crate_full_path)
+
       handle_artifacts(crate_full_path, config)
       # See #326: Ensure that the libraries are copied into the correct subdirectory
       # in `_build`.
       Mix.Project.build_structure()
     end
-    :ok = post_build(config)
     config
   end
 
