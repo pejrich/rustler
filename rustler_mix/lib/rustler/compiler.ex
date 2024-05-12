@@ -49,7 +49,7 @@ defmodule Rustler.Compiler do
     apply(m, f, [config | a])
   end
   defp post_build(config) do
-    Logger.warning("Skipping post build #{inspect Keyword.get(config, :post_build_mfa)}")
+    Logger.warning("Skipping post build #{inspect Map.get(config, :post_build_mfa)}")
     :ok
   end
 
