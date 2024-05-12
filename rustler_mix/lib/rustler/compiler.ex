@@ -36,7 +36,7 @@ defmodule Rustler.Compiler do
         {_, code} -> raise "Rust NIF compile error (rustc exit code #{code})"
       end
 
-      :ok = post_build({crate_full_path, config.target_dir})
+      :ok = post_build(config)
 
       handle_artifacts(crate_full_path, config)
       # See #326: Ensure that the libraries are copied into the correct subdirectory
@@ -46,13 +46,8 @@ defmodule Rustler.Compiler do
     config
   end
 
-  defp post_build(%{post_build_mfa: {m, f, a}} = config) do
-    apply(m, f, [config | a])
-  end
-  defp post_build(config) do
-    Logger.warning("Skipping post build #{inspect Map.get(config, :post_build_mfa)}")
-    :ok
-  end
+  defp post_build(%{post_build_mfa: {m, f, a}} = config), do: apply(m, f, [config | a])
+  defp post_build(config), do: :ok
 
   defp make_base_command(:system), do: ["cargo", "rustc"]
   defp make_base_command({:system, channel}), do: ["cargo", channel, "rustc"]
