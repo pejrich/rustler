@@ -1,6 +1,6 @@
 defmodule Rustler.Compiler do
   @moduledoc false
-
+    require Logger
   alias Rustler.Compiler.{Config, Messages, Rustup}
 
   @doc false
@@ -48,7 +48,10 @@ defmodule Rustler.Compiler do
   defp post_build(%{post_build_mfa: {m, f, a}} = config) do
     apply(m, f, [config | a])
   end
-  # defp post_build(_), do: :ok
+  defp post_build(config) do
+    Logger.warning("Skipping post build #{inspect Keyword.get(config, :post_build_mfa)}")
+    :ok
+  end
 
   defp make_base_command(:system), do: ["cargo", "rustc"]
   defp make_base_command({:system, channel}), do: ["cargo", channel, "rustc"]
