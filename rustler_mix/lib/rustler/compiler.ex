@@ -41,9 +41,14 @@ defmodule Rustler.Compiler do
       # in `_build`.
       Mix.Project.build_structure()
     end
-
+    post_build(config)
     config
   end
+
+  defp post_build(%{post_build_mfa: {m, f, a}} = config) do
+    apply(m, f, [config | a])
+  end
+  defp post_build(_), do: :ok
 
   defp make_base_command(:system), do: ["cargo", "rustc"]
   defp make_base_command({:system, channel}), do: ["cargo", channel, "rustc"]

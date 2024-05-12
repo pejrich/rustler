@@ -26,6 +26,7 @@ defmodule Rustler.Compiler.Config do
             path: "",
             priv_dir: "",
             skip_compilation?: false,
+            post_build_mfa: nil,
             target: nil,
             target_dir: "",
             metadata: nil
