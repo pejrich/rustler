@@ -41,7 +41,7 @@ defmodule Rustler.Compiler do
       # in `_build`.
       Mix.Project.build_structure()
     end
-    post_build(config)
+    :ok = post_build(config)
     config
   end
 
